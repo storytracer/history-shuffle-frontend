@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <h1 class="title is-1">#historyshuffle</h1>
   </div>
 </template>
 

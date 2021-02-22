@@ -5,7 +5,9 @@
         <h1 class="title is-1">Temopedia Shuffle</h1>
         <h2 class="subtitle is-3">Shuffle through Digital History collections</h2>
       </header>
-      <SourceCard v-for="i in cards" :key="i" />
+      <div v-for="(item, index) in items" :key="index">
+        <SourceCard :item="item" />
+      </div>
       <div class="has-text-centered">
         <b-button @click="loadMore" class="is-large is-danger">
           <span class="icon">
@@ -20,19 +22,44 @@
 
 <script>
 import SourceCard from '@/components/SourceCard.vue'
+
+import PostgrestService from '../Postgrest.service'
+const random = require("simple-random-number-generator")
+const europeanaMaxItems = 15768212
+const wdlMaxItems = 28005
+
 export default {
   name: 'Home',
   data () {
     return {
-      cards: 2
+      items: []
     }
   },
   components: {
     SourceCard
   },
+  async created () {
+    const postgrest = new PostgrestService()
+    this.postgrest = postgrest.getInstance()
+  },
   methods: {
-    loadMore() {
-      this.cards = this.cards + 2;
+    async loadMore() {
+      const randomEuropeanaRecordID = random({min: 1, max: europeanaMaxItems, integer: true})
+      const randomWDLRecordID = random({min: 1, max: wdlMaxItems, integer: true})
+
+      const { data, error } = await this.postgrest
+          .from('items')
+          .select()
+          .eq('id', randomEuropeanaRecordID)
+      if (!error) {
+          const europeanaItems = data
+          const wdlItems = [{collection_id: 2, record_id: randomWDLRecordID, url: `https://www.wdl.org/en/item/${randomWDLRecordID}/`}]
+
+          const newItems = wdlItems.concat(europeanaItems)
+
+          this.items = this.items.concat(newItems)
+          console.log(this.items)
+      }
     }
   }
 }

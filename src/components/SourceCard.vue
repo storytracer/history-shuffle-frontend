@@ -1,5 +1,5 @@
 <template>
-    <link-prevue v-if="item" :url="item.url" cardWidth="100%">
+    <link-prevue :url="item.url" cardWidth="100%">
         <template slot-scope="props">
             <a v-bind:href="item.url" target="_blank">
                 <article class="media source-card box">
@@ -10,7 +10,7 @@
                     </figure>
                     <div class="media-content">
                         <div class="content">
-                            <p class="source-card-collection">Europeana</p>
+                            <p class="source-card-collection">{{ collectionName(item.collection_id) }}</p>
                             <h4><v-clamp autoresize :max-lines="5">{{props.title}}</v-clamp></h4>
                             <v-clamp autoresize :max-lines="5">
                                 {{props.description}}
@@ -33,9 +33,6 @@
 <script>
 import LinkPrevue from 'link-prevue'
 import VClamp from 'vue-clamp'
-import PostgrestService from '../Postgrest.service'
-const random = require("simple-random-number-generator")
-const maxItems = 15768212
 
 export default {
   name: 'SourceCard',
@@ -43,22 +40,17 @@ export default {
     LinkPrevue,
     VClamp
   },
-  data () {
-    return {
-        item: null,
-        isLoading: true
-    }
+  props: {
+      item: Object
   },
-  async created () {
-    const postgrest = new PostgrestService()
-    this.postgrest = postgrest.getInstance()
-    const { data, error } = await this.postgrest
-        .from('items')
-        .select()
-        .eq('id', random({min: 1, max: maxItems, integer: true}))
-    if (!error) {
-        this.item = data[0]
-    }
+  methods: {
+      collectionName(collectionID) {
+          var collectionName = "Europeana"
+          if (collectionID == 2) {
+              collectionName = "World Digital Library"
+          }
+          return collectionName;
+      }
   }
 }
 </script>

@@ -1,31 +1,24 @@
 <template>
     <link-prevue v-if="item" :url="item.url">
         <template slot-scope="props">
-            <article class="media source-card box">
-            <figure class="media-left">
-                <p class="image is-128x128">
-                    <a v-bind:href="item.url" target="_blank">
-                        <img :src="props.img" :alt="props.title" />
-                    </a>
-                </p>
-            </figure>
-            <div class="media-content">
-                <div class="content">
-                    <p>
-                        <strong>Europeana</strong>
-                    </p>
-                    <a v-bind:href="item.url" target="_blank">
-                        <h4>{{props.title}}</h4>
-                    </a>
-                    <v-clamp autoresize :max-lines="3">
-                        {{props.description}}
-                    </v-clamp>
-                    <p>
-                        <a v-bind:href="props.url" target="_blank">More</a>
-                    </p>
-                </div>
-            </div>
-            </article>
+            <a v-bind:href="item.url" target="_blank">
+                <article class="media source-card box">
+                    <figure class="media-left">
+                        <p class="image is-128x128">
+                            <img :src="props.img" :alt="props.title" />
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <div class="content">
+                            <p class="source-card-collection">Europeana</p>
+                            <h4><v-clamp autoresize :max-lines="3">{{props.title}}</v-clamp></h4>
+                            <v-clamp autoresize :max-lines="3">
+                                {{props.description}}
+                            </v-clamp>
+                        </div>
+                    </div>
+                </article>
+            </a>
         </template>
 
     </link-prevue>
@@ -35,6 +28,7 @@
 import LinkPrevue from 'link-prevue'
 import VClamp from 'vue-clamp'
 import PostgrestService from '../Postgrest.service'
+const random = require("simple-random-number-generator")
 
 export default {
   name: 'SourceCard',
@@ -51,7 +45,9 @@ export default {
     const postgrest = new PostgrestService()
     this.postgrest = postgrest.getInstance()
     const { data, error } = await this.postgrest
-        .rpc('randomitem')
+        .from('items')
+        .select()
+        .eq('id', random({min: 1, max: 15768212, integer: true}))
     if (!error) {
         this.item = data[0]
     }
@@ -66,5 +62,14 @@ export default {
 
 .source-card {
     margin-bottom: 2rem;
+}
+
+.content p.source-card-collection {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.content h4 {
+    margin-bottom: 0.5rem;
 }
 </style>

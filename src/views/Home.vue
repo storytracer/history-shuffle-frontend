@@ -23,7 +23,7 @@
 <script>
 import SourceCard from '@/components/SourceCard.vue'
 
-import PostgrestService from '../Postgrest.service'
+import SupabaseService from '../Supabase.service'
 const random = require("simple-random-number-generator")
 const europeanaMaxItems = 15768212
 const wdlMaxItems = 28005
@@ -39,18 +39,19 @@ export default {
     SourceCard
   },
   async created () {
-    const postgrest = new PostgrestService()
-    this.postgrest = postgrest.getInstance()
+    const supabaseService = new SupabaseService()
+    this.supabase = supabaseService.getInstance()
   },
   methods: {
     async loadMore() {
       const randomEuropeanaRecordID = random({min: 1, max: europeanaMaxItems, integer: true})
       const randomWDLRecordID = random({min: 1, max: wdlMaxItems, integer: true})
 
-      const { data, error } = await this.postgrest
+      let { data, error } = await this.supabase
           .from('items')
           .select()
           .eq('id', randomEuropeanaRecordID)
+      
       if (!error) {
           const europeanaItems = data
           const wdlItems = [{collection_id: 2, record_id: randomWDLRecordID, url: `https://www.wdl.org/en/item/${randomWDLRecordID}/`}]

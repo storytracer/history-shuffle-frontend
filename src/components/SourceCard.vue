@@ -1,5 +1,5 @@
 <template>
-    <link-prevue v-if="item" :url="item.url">
+    <link-prevue v-if="item" :url="item.url" cardWdith="100%">
         <template slot-scope="props">
             <a v-bind:href="item.url" target="_blank">
                 <article class="media source-card box">
@@ -20,7 +20,9 @@
                 </article>
             </a>
         </template>
-
+        <template slot="loading">
+            <b-loading :is-full-page="true" v-model="isLoading" :can-cancel="false"></b-loading>
+        </template>
     </link-prevue>
 </template>
 
@@ -38,7 +40,8 @@ export default {
   },
   data () {
     return {
-        item: null
+        item: null,
+        isLoading: true
     }
   },
   async created () {

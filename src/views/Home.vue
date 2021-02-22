@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container is-max-desktop">
-      <h1 class="title is-1">#historyshuffle</h1>
+      <h1 class="title is-1 has-text-centered">#historyshuffle</h1>
       <SourceCard v-for="i in cards" :key="i" />
       <div class="has-text-centered">
         <b-button @click="loadMore">Load more…</b-button>

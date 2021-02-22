@@ -1,5 +1,5 @@
 <template>
-    <link-prevue v-if="item" :url="item.url" cardWdith="100%">
+    <link-prevue v-if="item" :url="item.url" cardWidth="100%">
         <template slot-scope="props">
             <a v-bind:href="item.url" target="_blank">
                 <article class="media source-card box">
@@ -11,8 +11,8 @@
                     <div class="media-content">
                         <div class="content">
                             <p class="source-card-collection">Europeana</p>
-                            <h4><v-clamp autoresize :max-lines="3">{{props.title}}</v-clamp></h4>
-                            <v-clamp autoresize :max-lines="3">
+                            <h4><v-clamp autoresize :max-lines="5">{{props.title}}</v-clamp></h4>
+                            <v-clamp autoresize :max-lines="5">
                                 {{props.description}}
                             </v-clamp>
                         </div>
@@ -21,7 +21,11 @@
             </a>
         </template>
         <template slot="loading">
-            <b-loading :is-full-page="true" v-model="isLoading" :can-cancel="false"></b-loading>
+            <div class="source-card-loading box has-text-centered">
+                <span class="icon is-large">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </span>
+            </div>
         </template>
     </link-prevue>
 </template>
@@ -64,6 +68,10 @@ export default {
 }
 
 .source-card {
+    margin-bottom: 2rem;
+}
+
+.source-card-loading {
     margin-bottom: 2rem;
 }
 

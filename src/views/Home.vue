@@ -4,7 +4,12 @@
       <h1 class="title is-1 has-text-centered">#historyshuffle</h1>
       <SourceCard v-for="i in cards" :key="i" />
       <div class="has-text-centered">
-        <b-button @click="loadMore">Load more…</b-button>
+        <b-button @click="loadMore" class="is-large is-primary">
+          <span class="icon">
+            <i class="fas fa-random"></i>
+          </span>
+          <span>More shuffle…</span>
+        </b-button>
       </div>
     </div>
   </section>

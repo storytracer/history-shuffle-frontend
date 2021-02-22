@@ -15,6 +15,10 @@
           </span>
           <span>Shuffle some more…</span>
         </b-button>
+        <p class="is-size-5">
+          <br>
+          (…shuffled enough? Check out more Digital History collections and tools <br> in our directory on <a href="https://tempopedia.org/" target="_blank">tempopedia.org</a>!)
+        </p>
       </div>
     </div>
   </section>

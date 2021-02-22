@@ -3,7 +3,7 @@
     <div class="container is-max-desktop">
       <header class="has-text-centered">
         <h1 class="title is-1">Tempopedia #archiveshuffle</h1>
-        <h2 class="subtitle is-3">Shuffle through Digital archives</h2>
+        <h2 class="subtitle is-3">Shuffle through digital archives</h2>
       </header>
       <div v-for="(item, index) in items" :key="index">
         <SourceCard :item="item" />

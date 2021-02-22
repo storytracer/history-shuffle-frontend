@@ -35,6 +35,7 @@ import LinkPrevue from 'link-prevue'
 import VClamp from 'vue-clamp'
 import PostgrestService from '../Postgrest.service'
 const random = require("simple-random-number-generator")
+const maxItems = 15768212
 
 export default {
   name: 'SourceCard',
@@ -54,7 +55,7 @@ export default {
     const { data, error } = await this.postgrest
         .from('items')
         .select()
-        .eq('id', random({min: 1, max: 15768212, integer: true}))
+        .eq('id', random({min: 1, max: maxItems, integer: true}))
     if (!error) {
         this.item = data[0]
     }

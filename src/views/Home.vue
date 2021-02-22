@@ -1,14 +1,17 @@
 <template>
   <section class="section">
     <div class="container is-max-desktop">
-      <h1 class="title is-1 has-text-centered">#historyshuffle</h1>
+      <header class="has-text-centered">
+        <h1 class="title is-1">Temopedia Shuffle</h1>
+        <h2 class="subtitle is-3">Shuffle through Digital History collections</h2>
+      </header>
       <SourceCard v-for="i in cards" :key="i" />
       <div class="has-text-centered">
-        <b-button @click="loadMore" class="is-large is-primary">
+        <b-button @click="loadMore" class="is-large is-danger">
           <span class="icon">
             <i class="fas fa-random"></i>
           </span>
-          <span>More shuffle…</span>
+          <span>Shuffle some more…</span>
         </b-button>
       </div>
     </div>
@@ -36,4 +39,7 @@ export default {
 </script>
 
 <style scoped>
+header {
+  margin-bottom: 2rem;
+}
 </style>

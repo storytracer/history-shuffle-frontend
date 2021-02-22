@@ -25,14 +25,14 @@ import SourceCard from '@/components/SourceCard.vue'
 
 import SupabaseService from '../Supabase.service'
 const random = require("simple-random-number-generator")
-const europeanaMaxItems = 15768212
-const wdlMaxItems = 28005
 
 export default {
   name: 'Home',
   data () {
     return {
-      items: []
+      items: [],
+      collections: [
+      ]
     }
   },
   components: {
@@ -41,26 +41,34 @@ export default {
   async created () {
     const supabaseService = new SupabaseService()
     this.supabase = supabaseService.getInstance()
+
+    let {data, error} = await this.supabase
+      .from('collections')
+      .select()
+      .order('id', { ascending: false })
+
+    if (!error) {
+      const collections = data
+      this.collections = collections
+
+      this.loadMore();
+    }
   },
   methods: {
     async loadMore() {
-      const randomEuropeanaRecordID = random({min: 1, max: europeanaMaxItems, integer: true})
-      const randomWDLRecordID = random({min: 1, max: wdlMaxItems, integer: true})
-
-      let { data, error } = await this.supabase
-          .from('items')
+      this.collections.forEach(async (collection, index) => {
+        const randomRecordID = random({min: 1, max: collection.total_items, integer: true})
+        
+        let { data, error } = await this.supabase
+          .from(collection.table)
           .select()
-          .eq('id', randomEuropeanaRecordID)
+          .eq('id', randomRecordID)
       
-      if (!error) {
-          const europeanaItems = data
-          const wdlItems = [{collection_id: 2, record_id: randomWDLRecordID, url: `https://www.wdl.org/en/item/${randomWDLRecordID}/`}]
-
-          const newItems = wdlItems.concat(europeanaItems)
-
-          this.items = this.items.concat(newItems)
-          console.log(this.items)
-      }
+        if (!error) {
+            const newItems = data
+            this.items = this.items.concat(newItems)
+        }
+      })
     }
   }
 }
